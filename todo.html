@@ -8,7 +8,7 @@
   </head>
   <body>
     <input type="text" />
-    <button>add</button>
+    <button class="btn add">add</button>
     <ul></ul>
     <script>
       // 1. 리스트 출력되도록 코드 수정
@@ -16,69 +16,57 @@
       // 3. add 버튼 누르면 항목 추가 (id 1씩 증가)
       const todos = [
         {
-          id: '1',
-          title: 'a',
+          id: "1",
+          title: "a제목입니다",
           completed: 0,
         },
         {
-          id: '2',
-          title: 'b',
+          id: "2",
+          title: "b제목입니다",
           completed: 0,
+        },
+      ];
+      list();
+      function list() {
+        const ul = document.querySelector("ul");
+        const li = document.querySelector("li");
+        const todoMap = (todoslist) =>
+          `<li>${todoslist.id}&nbsp;&nbsp
+          ${todoslist.title}&nbsp;&nbsp;
+          ${todoslist.completed}&nbsp;&nbsp;
+          <button class="btndel">삭제</button></li>`;
+        ul.innerHTML = todos.map(todoMap).join("");
+        // const btn = document.querySelector('button');
+        //  const input = document.querySelector('input');
+        const btnDel = document.querySelectorAll(".btndel");
+        for (let i = 0; i < btnDel.length; i++) {
+          btnDel[i].addEventListener("click", (e) => {
+            todos.splice(i, 1);
+            e.target.parentNode.remove();
+            console.log(todos);
+          });
         }
-      ]
-      ///console.log(todos);
-      //console.log(todos[0]);
-      // 1. todos배열로 리스트 만들기
-      // 2. input 에 값 입력 후 add 버튼 누르면 배열에도 값 추가, li도 추가
-      // 3. li클릭하면 배열에서도 삭제, li도 삭제
-      const ul = document.querySelector("ul");
-      const input = document.querySelector("input");
-      const btn = document.querySelector("button");
-
-      todoAdd();
-      // reCount();
-      const todoMap =  (todoslist) => `<li>${todoslist}</li>`
-      
-      function todoAdd() {
-        ul.innerHTML = todos.map((todoslist) => `<li>${todoslist}<button></li>`).join('');
-        ul.innerHTML = todos.map(todoMap).join('');
-          // ul.innerHTML += `<li>${todoslist}</li>`; //
-          
-        
-        
-        const todosMap = todos.map((todoslist) => {
-          // ul.innerHTML += `<li>${todoslist}</li>`; //
-          return `<li>${todoslist}</li>`
-        })
-        ul.innerHTML = todosMap.join('')
-
       }
-
-      btn.addEventListener("click", () => {
-        todos.push(input.value);
-        console.log(todos);
-        ul.innerHTML += `<li>${input.value}</li>`;
-        for (let i = 0; i < todos.length; i++) {
-          btn.innerText = "ADD" + i + "번째 추가";
+      // 이벤트위임
+      document.querySelector("body").addEventListener("click", (e) => { // 버튼에다가
+        if (e.target.classList.contains('add')) {
+          // let id =null; //          
+          // if(todos.length == 0)
+          // {
+          //   id = 1
+          
+          // } else {
+          //   id = Number(todos[todos.length-1].id)+1
+        
+          // }
+          
+          let id = todos.length !== 0 ? Number(todos[todos.length-1].id)+1 : 1          
+          todos.push({id:id,title: "b제목입니다",completed: 0})
+          list();
         }
-        // reCount();
-
-        //  alert(btn.innerText)
-      });
-
-      // function reCount() {
-      //   const li = document.querySelectorAll("li");
-      //   for (let i = 0; i < li.length; i++) {
-      //     li[i].addEventListener("click", () => {
-      //       todos.splice(i, 1);
-      //       li[i].remove();
-      //       console.log(todos);
-      //       console.log(li[i]);
-      //       alert('li 인덱스 : ' + i);
-      //     });
-      //     console.log(li[i]);
-      //   }
-      // }
+        // console.log(Number(todos[todos.length-1].id));
+        // console.log(todos[todos.length-1].id);
+      });      
     </script>
   </body>
 </html>
