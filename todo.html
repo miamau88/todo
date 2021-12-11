@@ -33,50 +33,22 @@
         },
       ];
       list();
-      check();
-      // check();
-      // function list() {
-      //   //기존 배열 리스트 추가
-      //   const ul = document.querySelector("ul");
-      //   const li = document.querySelector("li");
-      //   const todoMap = (todoslist) =>
-      //   `<li>
-      //     <input type='checkbox'>
-      //     ${todoslist.id}&nbsp;&nbsp
-      //     ${todoslist.title}&nbsp;&nbsp;
-      //     ${todoslist.completed} &nbsp;&nbsp;
-      //     <button class="btndel">삭제</button></li>`
-      //     ul.innerHTML = todos.map(todoMap).join("");
-      //     const btnDel = document.querySelectorAll(".btndel");
-
-
-      //   // 삭제
-      //   for (let i = 0; i < btnDel.length; i++) {
-      //     btnDel[i].addEventListener("click", (e) => {
-      //       todos.splice(i, 1);
-      //       e.target.parentNode.remove();
-      //       console.log(todos);
-      //     });
-      //   }
-      // }
-
+      check();      
       function list() {
         //기존 배열 리스트 추가
+        let chk1 = 0
         const ul = document.querySelector("ul");
         const li = document.querySelector("li");        
         const todoMap = (todoslist =>    {               
         check();
-        return `<li>
-          ${todoslist.completed == 0 ? `<input type='checkbox'>` : `<input type='checkbox' checked>`}
+        return `<li>          
+          <input type='checkbox' ${todoslist.completed !== 0 ? 'checked' : ''}>
           ${todoslist.id}&nbsp;&nbsp
           ${todoslist.title}&nbsp;&nbsp;          
-          ${todoslist.completed == 0 ? `${todoslist.completed}<a>미확인</a>` : `${todoslist.completed}<a class='a'>체크완료</a>`}  &nbsp;&nbsp;          
+          ${todoslist.completed == 0 ? `${todoslist.completed}<a>미확인</a>` : `${todoslist.completed}<a>체크완료</a>`}  &nbsp;&nbsp;          
           <button class="btndel">삭제</button></li>`          
         });
-        
-   
-        // ${todoslist.completed == 0 ? `<a>${todoslist.completed}.</a>` : `<a class='a'>${todoslist.completed}</a>`}  &nbsp;&nbsp;  
-        // console.log(todos)        
+         
         
           ul.innerHTML = todos.map(todoMap).join("");
           const btnDel = document.querySelectorAll(".btndel");
@@ -88,58 +60,31 @@
             e.target.parentNode.remove();
             console.log(todos);
           });
-        }
-        
+        }        
       }
       function check(){
-      const a = document.querySelectorAll('a')
+      const a = document.querySelectorAll('a')      
       const check = document.querySelectorAll('input[type=checkbox]');            
         for (let i=0; i < check.length; i++){
-          check[i].addEventListener('click', e => {            
+          check[i].addEventListener('click', (e) => {            
           check[i].checked !== true ? a[i].classList.remove('a') : a[i].classList.add('a');
           check[i].checked == true ? todos[i].completed = 1 : todos[i].completed = 0;                                    
           check[i].checked == true ? a[i].innerText = `체크완료` : a[i].innerText=  `미확인`                  
           console.log(todos[i].completed);          
         });                    
-        }          
+        }
       }
-        
-
       // 이벤트위임
-      document.querySelector("body").addEventListener("click", (e) => { // 버튼에다가
+      document.querySelector("body").addEventListener("click", (e) => { 
         if (e.target.classList.contains('add')) {
           const input = document.querySelector('input');
           let id = todos.length !== 0 ? Number(todos[todos.length-1].id)+1 : 1 ;
-          input.value == 0  ? alert('값없음') : todos.push({id:id,title: input.value,completed: 0}) ;
+          input.value == 0  ? alert('값없음') : todos.push({id:id,title: input.value,completed: 1}) ;
           list();
           check();
-          }
+        }
           
         });
-
-        
-        // //
-        // function check()        
-        // {
-        //   const check = document.querySelectorAll('input[type=checkbox]');
-        //   const a = document.querySelectorAll('a')
-        //   const hidden = document.querySelectorAll('input[type=hidden]')
-        //   li = document.querySelectorAll("li");          
-        //   for(let i=0; i < check.length; i++ ){        
-        //     check[i].addEventListener('click', e => {            
-        //       //  check[i].checked == true ? hidden[i].value ='1': hidden[i].value = '0';            
-        //       const chkres = check[i].checked == true ? todos[i].completed = 1 : todos[i].completed = 0;            
-        //       // check[i].checked == true ? a[i].innerText ='체크완료' : a[i].innerText = '미확인';            
-        //     console.log(todos)           
-        //     // li[i].remove();            
-        //     })
-            
-        //   }
-          
-          
-        // }
-
-
 
       // 4회차 과제
       // input에 값이 없을 때 예외처리
