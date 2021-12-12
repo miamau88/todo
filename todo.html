@@ -4,56 +4,12 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- <link rel="stylesheet" href="../BBS/assets/css/reset.css" /> -->
     <title>Document</title>
     <style>
-      .container {
-        width: 800px;
-        margin: 100px auto;
-        height: auto;
-        padding: 40px;
-        border-radius: 3px;
-        box-shadow: 0 2px 10px 2px rgb(34 36 38 / 15%);
-      }
-      .title-box {
-        text-align: left;
-        height: 40px;
-        margin-bottom: 20px;
-      }
-      .title {
-        display: block;
-        font-size: 35px;
-      }
-      .sub-titleBox {
-        text-align: center;
-        background: #f44336d9;
-        height: 140px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      }
-      .sub-title {
-        display: block;
-        font-size: 25px;
-        color: #fff;
-        height: 30px;
-      }
-      .add-box {
-        width: 100%;
-        margin-top: 20px;
-        overflow: hidden;
-        height: 50px;
-      }
-      .todo-txtInput {
-        width: 75%;
-        border: none;
-        height: 40px;
-        border-radius: 1px !important;
-        padding-left: 10px;
-        font-size: 1rem;
+      .a {
         color: gray;
       }
+<<<<<<< HEAD
       input::-webkit-input-placeholder { opacity: 1; transition: all 0.5s; }
       input:focus::-webkit-input-placeholder { text-indent: -10px; opacity: 0; }
       
@@ -120,7 +76,7 @@
       }
       .checkBox{flex:0.35 !important;text-align: center;}
       .checkBox:hover label{transition: all 0.25s;width:35px;height:35px;}
-      .todo-title{flex:2 !important;}
+      .todo-title{flex:2 !important;height:30px;text-align:left !important;}
       .btndel {
         border: none;
         background: turquoise;
@@ -129,72 +85,61 @@
         color: #fff;
         border-radius: 3px;
         cursor:pointer;
+        font-size: 1rem;
+        font-weight: bold;
       }
+      
       .btndel:hover {
         background: #f44336;
         transition: all 0.25s;
       }
-      .completed{background:gray;color:#f5f5f5;}
+      .completed{background:gray;color:#f5f5f5;transition:all 0.5s;}
+=======
+>>>>>>> parent of 8235616 (추가과제  애기하신거 다 했어여~)
     </style>
   </head>
   <body>
-    <div class="container">
-      <div class="title-box"><span class="title">New ToDo List</span></div>
-      <div class="">
-        <div class="sub-titleBox">
-          <span class="sub-title">My ToDO List</span>
-          <div class="add-box">
-            <input
-              type="text"
-              class="todo-txtInput"
-              placeholder="ToDo Title....."
-            /><button class="btn add">Add</button>
-          </div>
-        </div>
-      </div>
-      <div>
-        <ul></ul>
-      </div>
-    </div>
-    <!-- container end -->
-
+    <input type="text" />
+    <button class="btn add">add</button>
+    <ul></ul>
     <script>
-      // 3회차 과제
+       // 3회차 과제
       // 1. 리스트 출력되도록 코드 수정
       // 2. 삭제 버튼 클릭하면 배열에서 삭제, 목록에서도 제거
       // 3. add 버튼 누르면 항목 추가 (id 1씩 증가)
       const todos = [
         {
           id: "1",
-          title: "제목입니다 첫번쨰",
+          title: "a제목입니다",
           completed: 0,
         },
         {
           id: "2",
-          title: "제목입니다 두번쨰",
-          completed: 0,
+          title: "b제목입니다",
+          completed: 1,
         },
       ];
       list();
-      check();
+      check();      
       function list() {
-        //기존 배열 리스트 추가        
+        //기존 배열 리스트 추가
+        let chk1 = 0
         const ul = document.querySelector("ul");
-        const li = document.querySelector("li");
-        const todoMap = (todoslist) => {
-          check();
-          return `<li class='todo-list'>
-          <div class="checkBox"><input type='checkbox' id='chkList${todoslist.id}'
-          ${todoslist.completed !== 0 ? "checked" : ""}><label for='chkList${
-            todoslist.id
-          }'></label></div>          
-          <div class="todo-title">${todoslist.title}</div>                   
-          <button class="btndel">x</button></li>`;
-        };
-
-        ul.innerHTML = todos.map(todoMap).join("");
-        const btnDel = document.querySelectorAll(".btndel");
-
+        const li = document.querySelector("li");        
+        const todoMap = (todoslist =>    {               
+        check();
+        return `<li>          
+          <input type='checkbox' ${todoslist.completed !== 0 ? 'checked' : ''}>
+          ${todoslist.id}&nbsp;&nbsp
+          ${todoslist.title}&nbsp;&nbsp;          
+          ${todoslist.completed == 0 ? `${todoslist.completed}<a>미확인</a>` : `${todoslist.completed}<a>체크완료</a>`}  &nbsp;&nbsp;          
+          <button class="btndel">삭제</button></li>`          
+        });
+         
+        
+          ul.innerHTML = todos.map(todoMap).join("");
+          const btnDel = document.querySelectorAll(".btndel");
+          
         // 삭제
         for (let i = 0; i < btnDel.length; i++) {
           btnDel[i].addEventListener("click", (e) => {
@@ -202,10 +147,10 @@
             e.target.parentNode.remove();
             console.log(todos);
           });
+<<<<<<< HEAD
         }
       }
-      function check() {
-        const a = document.querySelectorAll("a");
+      function check() {        
         const check = document.querySelectorAll("input[type='checkbox']");
         const li = document.querySelectorAll("li");
         for (let i = 0; i < check.length; i++) {
@@ -216,9 +161,9 @@
             check[i].checked == true
               ? (todos[i].completed = 1)
               : (todos[i].completed = 0);
-            check[i].checked == true 
-              ? (a[i].innerText = `체크완료` ) 
-              : (a[i].innerText = `미확인`);
+            // check[i].checked == true 
+            //   ? (a[i].innerText = `체크완료` ) 
+            //   : (a[i].innerText = `미확인`);
               
               
               
@@ -231,16 +176,39 @@
       // 이벤트위임
       document.querySelector(".container").addEventListener("click", (e) => {
         if (e.target.classList.contains("add")) {
-          const input = document.querySelector("input");
+          const input = document.querySelector(".todo-txtInput");
           let id =
             todos.length !== 0 ? Number(todos[todos.length - 1].id) + 1 : 1;
           input.value == 0
             ? alert("내용을 입력하세요")
             : todos.push({ id: id, title: input.value, completed: 0 });
+=======
+        }        
+      }
+      function check(){
+      const a = document.querySelectorAll('a')      
+      const check = document.querySelectorAll('input[type=checkbox]');            
+        for (let i=0; i < check.length; i++){
+          check[i].addEventListener('click', (e) => {            
+          check[i].checked !== true ? a[i].classList.remove('a') : a[i].classList.add('a');
+          check[i].checked == true ? todos[i].completed = 1 : todos[i].completed = 0;                                    
+          check[i].checked == true ? a[i].innerText = `체크완료` : a[i].innerText=  `미확인`                  
+          console.log(todos[i].completed);          
+        });                    
+        }
+      }
+      // 이벤트위임
+      document.querySelector("body").addEventListener("click", (e) => { 
+        if (e.target.classList.contains('add')) {
+          const input = document.querySelector('input');
+          let id = todos.length !== 0 ? Number(todos[todos.length-1].id)+1 : 1 ;
+          input.value == 0  ? alert('값없음') : todos.push({id:id,title: input.value,completed: 1}) ;
+>>>>>>> parent of 8235616 (추가과제  애기하신거 다 했어여~)
           list();
           check();
         }
-      });
+          
+        });
 
       // 4회차 과제
       // input에 값이 없을 때 예외처리
