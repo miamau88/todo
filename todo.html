@@ -216,14 +216,13 @@
             // e.target.closest('찾을 요소')
             // if (true) { // 스코프
             // }
-            if (check[i].checked !== true){
-              
+            if (check[i].checked !== true){              
               eli.classList.remove("completed");            
-              todos[i].completed = 1;
+              todos[i].completed = 0;
               return
             }            
             eli.classList.add("completed");            
-            todos[i].completed = 0;
+            todos[i].completed = 1;
             // check[i].checked == true 
             //   ? (a[i].innerText = `체크완료` ) 
             //   : (a[i].innerText = `미확인`);
@@ -240,7 +239,7 @@
             
           // input.value == 0
           //   ? alert("내용을 입력하세요")
-          //   : todos.push({ id: id, title: input.value, completed: 0 });
+          //   : todos.push({ id: id, title: input.value, completed: 0 });  
           if(input.value == 0){
             // return 은 다음 코드가 실행되는걸 막아줍니다.
             return alert("내용을 입력하세요")
@@ -249,10 +248,8 @@
           todos.push({ id: id, title: input.value, completed: 0 });
           list();   
           check();
-          
-          
-          
         }
+
       });
 
       // 4회차 과제
