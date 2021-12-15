@@ -219,6 +219,7 @@
             if (check[i].checked !== true){              
               eli.classList.remove("completed");            
               todos[i].completed = 0;
+              console.log(todos[i].completed);
               return
             }            
             eli.classList.add("completed");            
@@ -226,8 +227,9 @@
             // check[i].checked == true 
             //   ? (a[i].innerText = `체크완료` ) 
             //   : (a[i].innerText = `미확인`);
-            console.log(todos[i].completed);
+            console.log(todos[i].completed);  
           });
+          
         }
       }
       //이벤트위임
