@@ -4,167 +4,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- <link rel="stylesheet" href="../BBS/assets/css/reset.css" /> -->
+    <link rel="stylesheet" href="study/style.css" />
     <title>Document</title>
-    <style>
-      .container {
-        width: 800px;
-        margin: 100px auto;
-        height: auto;
-        padding: 40px;
-        border-radius: 3px;
-        box-shadow: 0 2px 10px 2px rgb(34 36 38 / 15%);
-      }
-      .title-box {
-        text-align: left;
-        height: 40px;
-        margin-bottom: 20px;
-      }
-      .title {
-        display: block;
-        font-size: 35px;
-      }
-      .sub-titleBox {
-        text-align: center;
-        background: #f44336d9;
-        height: 140px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      }
-      .sub-title {
-        display: block;
-        font-size: 25px;
-        color: #fff;
-        height: 30px;
-      }
-      .add-box {
-        width: 100%;
-        margin-top: 20px;
-        overflow: hidden;
-        height: 50px;
-      }
-      .todo-txtInput {
-        width: 75%;
-        border: none;
-        height: 40px;
-        border-radius: 1px !important;
-        padding-left: 10px;
-        font-size: 1rem;
-        color: gray;
-        vertical-align: bottom;
-      }
-      input::-webkit-input-placeholder {
-        opacity: 1;
-        transition: all 0.5s;
-      }
-      input:focus::-webkit-input-placeholder {
-        text-indent: -10px;
-        opacity: 0;
-      }
-
-      input:focus {
-        outline: none;
-      }
-      input[type="checkbox"] {
-        display: none;
-      }
-
-      input[type="checkbox"] + label {
-        display: inline-block;
-        width: 30px;
-        height: 30px;
-        cursor: pointer;
-        transition: all 0.25s;
-        border: 1px solid lightgray;
-        border-radius: 3px;
-      }
-      input[type="checkbox"]:checked + label::after {
-        content: "\2713";
-        font-size: 30px;
-        text-align: center;
-        font-weight: bold;
-        width: 30px;
-        border: none;
-      }
-      input[type="checkbox"]:checked + label {
-        border: none;
-      }
-      input[type="checkbox"]:checked + label .todo-list {
-        background: red;
-      }
-
-      .btn {
-        height: 42px;
-        border: none;
-        width: 20%;
-        border-radius: 1px !important;
-        font-size: 1rem;
-        color: #333;
-      }
-      .btn:hover {
-        background: turquoise;
-        transition: all 0.25s;
-        color: #f5f5f5;
-      }
-      ul {
-        padding: 0;
-        margin: 1px 0;
-      }
-      .todo-list {
-        background: #f5f5f5;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 1rem;
-        height: auto;
-        max-height: 100px;
-        margin: 1px auto;
-        padding: 5px;
-      }
-      .todo-list > div {
-        flex: 1;
-        text-align: center;
-        word-break: break-all;
-      }
-      .checkBox {
-        flex: 0.35 !important;
-        text-align: center;
-      }
-      .checkBox:hover label {
-        transition: all 0.25s;
-        width: 35px;
-        height: 35px;
-      }
-      .todo-title {
-        flex: 2 !important;
-        height: 30px;
-        text-align: left !important;
-      }
-      .btndel {
-        border: none;
-        background: turquoise;
-        width: 30px;
-        height: 30px;
-        color: #fff;
-        border-radius: 3px;
-        cursor: pointer;
-        font-size: 1rem;
-        font-weight: bold;
-      }
-
-      .btndel:hover {
-        background: #f44336;
-        transition: all 0.25s;
-      }
-      .completed {
-        background: gray;
-        color: #f5f5f5;
-        transition: all 0.25s;
-        text-decoration: line-through;
-      }
-    </style>
   </head>
   <body>
     <div class="container">
@@ -192,53 +33,54 @@
       // 1. 리스트 출력되도록 코드 수정
       // 2. 삭제 버튼 클릭하면 배열에서 삭제, 목록에서도 제거
       // 3. add 버튼 누르면 항목 추가 (id 1씩 증가)
-      // const todos = [
-      //   {
-      //     id: "1",
-      //     title: "제목입니다 첫번쨰",
-      //     completed: 0,
-      //   },
-      //   {
-      //     id: "2",
-      //     title: "제목입니다 두번쨰",
-      //     completed: 1,
-      //   },
-      // ];
 
-      list();
-      check();
+      fetch("https://jsonplaceholder.typicode.com/todos") // 1
+        .then((res) => res.json())
+        .then((res) => {
+          todos = res;
+          list();
+          check();
+        });
+
+      let todos = [];
+
+      // 1 -> 2 -> 3
+
+      // list(); // 2
+
       function list() {
-        // console.log('list')
+        console.log(todos);
         //기존 배열 리스트 추가
         const ul = document.querySelector("ul");
         const li = document.querySelector("li");
-        fetch("https://jsonplaceholder.typicode.com/todos")
-          .then((res) => res.json())
-          .then((res) => {
-            // check();
-            const todoMap = (todoslist) => {
-              // 변수명 수정 필요
-             return `<li class='todo-list ${todoslist.completed !== false ? "completed" : ""}'>
-                <div class="checkBox"><input type='checkbox' id='chkList${todoslist.id}'
+
+        // check();
+        const todoMap = (todoslist) => {
+          // 변수명 수정 필요
+          return `<li class='todo-list ${
+            todoslist.completed !== false ? "completed" : ""
+          }'>
+                <div class="checkBox"><input type='checkbox' id='chkList${
+                  todoslist.id
+                }'
                 ${todoslist.completed !== false ? "checked" : ""}>
-                <label for='chkList${todoslist.id}'></label></div>          
-                <div class="todo-title">${todoslist.title}</div>                   
+                <label for='chkList${todoslist.id}'></label></div>
+                <div class="todo-title">${todoslist.title}</div>
                 <button class="btndel">x</button></li>`;
-            };
-            // ul.innerHTML = todos.map(todoMap).join("");
-            ul.innerHTML = res.map(todoMap).join("");
-            const btnDel = document.querySelectorAll(".btndel");
-            // 삭제`
-            for (let i = 0; i < btnDel.length; i++) {
-              btnDel[i].addEventListener("click", (e) => {
-                res.splice(i, 1);
-                e.target.parentNode.remove();
-                console.log(res);
-              });
-            }
+        };
+        // ul.innerHTML = todos.map(todoMap).join("");
+        ul.innerHTML = todos.map(todoMap).join("");
+        const btnDel = document.querySelectorAll(".btndel");
+        // 삭제`
+        for (let i = 0; i < btnDel.length; i++) {
+          btnDel[i].addEventListener("click", (e) => {
+            todos.splice(i, 1);
+            e.target.parentNode.remove();
+            console.log(todos);
           });
-      }        /* list end */
-      
+        }
+      } /* list end */
+
       function check() {
         const check = document.querySelectorAll("input[type='checkbox']");
         for (let i = 0; i < check.length; i++) {
@@ -250,25 +92,27 @@
             // }
             if (check[i].checked !== true) {
               eli.classList.remove("completed");
-              res[i].completed = false;
-              console.log(res[i].completed);
+              todos[i].completed = false;
+              console.log(todos[i].completed);
               return;
             }
             eli.classList.add("completed");
-            res[i].completed = true;
+            todos[i].completed = true;
+
             // check[i].checked == true
             //   ? (a[i].innerText = `체크완료` )
             //   : (a[i].innerText = `미확인`);
-            console.log(res[i].completed);
+            console.log(todos[i].completed);
           });
         }
-      }    /* check end */
-      
+      } /* chetck end */
+
       // 이벤트위임
       document.querySelector("#add-btn").addEventListener("click", (e) => {
         if (e.target.classList.contains("add")) {
           const input = document.querySelector(".todo-txtInput");
-          let id = res.length !== 0 ? Number(res[res.length - 1].id) + 1 : 1;
+          let id =
+            todos.length !== 0 ? Number(todos[todos.length - 1].id) + 1 : 1;
 
           // input.value == 0
           //   ? alert("내용을 입력하세요")
@@ -277,7 +121,7 @@
             // return 은 다음 코드가 실행되는걸 막아줍니다.
             return alert("내용을 입력하세요");
           }
-          res.push({ id: id, title: input.value, completed: false });
+          todos.push({ id: id, title: input.value, completed: false });
           list();
           check();
         }
