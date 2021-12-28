@@ -1,14 +1,16 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const api = require('./api/index.js')
-app.use('/', api)
+const api = require("./api/index.js");
+app.use(cors());
+app.use("/", api);
+ 
 // const { hi, msg } = require('./say')
 // console.log(hi(),msg())
 // console.log(say.msg())
 const port = 5000;
-app.use(cors());
 app.use(express.json());
+
 // localhost:3000/todos
 const mysql = require("mysql");
 const connection = mysql.createConnection({
@@ -19,13 +21,37 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
+app.get("/bbs", (req, res) => {
+  // connection.connect();
+  connection.query("SELECT * from study.bbs", function (err, rows, fields) {
+    if (err) throw err;
+    res.send(rows);
+    console.log(rows);
+  });
+});
+
+app.delete("/bbs", (req, res) => {
+  // connection.connect();    
+    const id = req.body.no;    // 속서명 적어줘야됨 
+    connection.query(
+      `delete from study.bbs where no=?`,
+      [id],
+      function (err, rows, fields) {
+        if (err) throw err;
+        res.send(rows);
+        console.log(rows);
+      }
+    );
+  });
+
+
 // /todos / http method
 // get, post, patch, delete...
 
 // /todos
 // /user
 // app.get("/test/:userId/:id",(req,res)=>{
-   
+
 //       console.log(req.params)
 // })
 // app.get("/todos", (req, res) => {
@@ -69,7 +95,7 @@ connection.connect();
 //   // const id = req.params.id;
 //   const {userId,id} = req.params
 //   const completed = req.body.completed;
-  
+
 //   connection.query(
 //     `update study.todos set completed=? where userId=? and id=?`,
 //     [completed, userId, id],

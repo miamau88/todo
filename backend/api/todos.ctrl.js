@@ -1,13 +1,15 @@
-const express = require("express");
-const app = express();
-const cors = require("cors");
+// const express = require("express");
+// const app = express();
+// const cors = require("cors");
 const mysql = require("mysql");
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "root",
 });
-app.use(cors());
+// app.use(cors());
+
+
 
 connection.connect();
 const getCtrl = (req, res) => {
@@ -21,7 +23,7 @@ const getCtrl = (req, res) => {
 
 const postCtrl = (req, res) => {
   // connection.connect();
-  console.log(req.params);
+  // console.log(req.params);
   console.log(req.body);
   const userId = req.params.userId.trim();
   const title = req.body.title.trim();
@@ -57,7 +59,7 @@ const patchCtrl =(req,res) =>{
     connection.query(
       `update study.todos set completed=? where userId=? and id=?`,
       [completed, userId, id],
-      function (err, rows, fields) {
+      function (err, rows) {
         if (err) throw err;
         res.send(rows);
         console.log(rows);
