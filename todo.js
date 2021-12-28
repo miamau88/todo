@@ -1,11 +1,10 @@
-
 // 3회차 과제
 // 1. 리스트 출력되도록 코드 수정
 // 2. 삭제 버튼 클릭하면 배열에서 삭제, 목록에서도 제거
 // 3. add 버튼 누르면 항목 추가 (id 1씩 증가)
 
-fetch("https://jsonplaceholder.typicode.com/todos") // 1
-  .then((res) => res.json())        
+fetch("http://localhost:5000/todos") // 1
+  .then((res) => res.json())
   .then((res) => {
     todos = res;
     list();
@@ -28,12 +27,12 @@ function list() {
   const todoMap = (todoslist) => {
     // 변수명 수정 필요
     return `<li class='todo-list ${
-      todoslist.completed !== false ? "completed" : ""
-    }'>
+      todoslist.completed !== "false" ? "completed" : ""
+    }' data-id="${todoslist.id}">
           <div class="checkBox"><input type='checkbox' id='chkList${
             todoslist.id
           }'
-          ${todoslist.completed !== false ? "checked" : ""}>
+          ${todoslist.completed !== "false" ? "checked" : ""}>
           <label for='chkList${todoslist.id}'></label></div>
           <div class="todo-title">${todoslist.title}</div>
           <button class="btndel">x</button></li>`;
@@ -44,9 +43,21 @@ function list() {
   // 삭제`
   for (let i = 0; i < btnDel.length; i++) {
     btnDel[i].addEventListener("click", (e) => {
-      todos.splice(i, 1);
-      e.target.parentNode.remove();
-      console.log(todos);
+      const id = e.target.parentNode.dataset.id
+      console.log(id)
+      fetch(`http://localhost:5000/todos/1/${id}`, {
+        method: 'DELETE',
+      })
+        .then(() => {
+          todos.splice(i, 1);
+          e.target.parentNode.remove();
+          console.log(todos);
+          // alert("삭제되었습니다");
+          // setTimeout(() => {
+          //   location.reload();
+          // }, 500);
+        })
+        .catch((err) => alert(err));
     });
   }
 } /* list end */
@@ -60,14 +71,30 @@ function check() {
       // e.target.closest('찾을 요소')
       // if (true) { // 스코프
       // }
-      if (check[i].checked !== true) {
-        eli.classList.remove("completed");
-        todos[i].completed = false;
-        console.log(todos[i].completed);
-        return;
-      }
-      eli.classList.add("completed");
-      todos[i].completed = true;
+      //   debugger
+
+      const completed = todos[i].completed == "true" ? "false" : "true";
+      fetch(
+        `http://localhost:5000/todos/${todos[i].userId}/${todos[i].id}`,
+        {
+        method :'PATCH',
+        headers: {
+          "Content-Type":"application/json;charset=utf-8"
+        },
+        body: JSON.stringify({completed: `${completed}` })
+        }
+      )
+        .then(() => {
+          if (check[i].checked !== true) {
+            eli.classList.remove("completed");
+            todos[i].completed = "false";
+            console.log(todos[i].completed);
+            return;
+          }
+          eli.classList.add("completed");
+          todos[i].completed = "true";
+        })
+        .catch((err) => alert(err));
 
       // check[i].checked == true
       //   ? (a[i].innerText = `체크완료` )
@@ -81,8 +108,7 @@ function check() {
 document.querySelector("#add-btn").addEventListener("click", (e) => {
   if (e.target.classList.contains("add")) {
     const input = document.querySelector(".todo-txtInput");
-    let id =
-      todos.length !== 0 ? Number(todos[todos.length - 1].id) + 1 : 1;
+    let id = todos.length !== 0 ? Number(todos[todos.length - 1].id) + 1 : 1;
 
     // input.value == 0
     //   ? alert("내용을 입력하세요")
@@ -91,9 +117,32 @@ document.querySelector("#add-btn").addEventListener("click", (e) => {
       // return 은 다음 코드가 실행되는걸 막아줍니다.
       return alert("내용을 입력하세요");
     }
-    todos.push({ id: id, title: input.value, completed: false });
-    list();
-    check();
+    fetch(`http://localhost:5000/todos/1`,
+     {
+      method: 'POST',
+      headers: {
+        "Content-Type":"application/json;charset=utf-8"
+      },
+      body: JSON.stringify({title: input.value})
+     })
+      .then((res) => res.json())
+      .then((res) => {
+        todos.push({ id: id, title: input.value, completed: 'false' });
+        //   if (res == 'success') {
+        //     alert('suc')
+        //     setTimeout(() => {
+        //       location.reload();
+        //     }, 500);
+        //   }if(res =='fail') {
+        //     alert('123아니야')
+             list();
+             check();          
+        //     setTimeout(() => {
+        //       location.reload();
+        //     }, 500);
+        //   }    
+        // })
+      }).catch((err) => alert(err));
   }
 });
 
